@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatsInMyBar", "WhatsInMyBa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatsInMyBar.Tests", "WhatsInMyBar.Tests\WhatsInMyBar.Tests.csproj", "{72E5809E-BED1-4B30-BE16-BEA56CD23416}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scraper", "..\Scraper\Scraper.csproj", "{15EC66C5-E784-4CA5-A7C9-CCC62335FAEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{72E5809E-BED1-4B30-BE16-BEA56CD23416}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72E5809E-BED1-4B30-BE16-BEA56CD23416}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72E5809E-BED1-4B30-BE16-BEA56CD23416}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15EC66C5-E784-4CA5-A7C9-CCC62335FAEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15EC66C5-E784-4CA5-A7C9-CCC62335FAEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15EC66C5-E784-4CA5-A7C9-CCC62335FAEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15EC66C5-E784-4CA5-A7C9-CCC62335FAEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
