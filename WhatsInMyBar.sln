@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatsInMyBar", "WhatsInMyBar\WhatsInMyBar.csproj", "{F26D5EB4-56EA-47B2-B190-8F00EA0EA0AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatsInMyBar.Tests", "WhatsInMyBar.Tests\WhatsInMyBar.Tests.csproj", "{72E5809E-BED1-4B30-BE16-BEA56CD23416}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F26D5EB4-56EA-47B2-B190-8F00EA0EA0AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F26D5EB4-56EA-47B2-B190-8F00EA0EA0AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F26D5EB4-56EA-47B2-B190-8F00EA0EA0AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F26D5EB4-56EA-47B2-B190-8F00EA0EA0AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72E5809E-BED1-4B30-BE16-BEA56CD23416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72E5809E-BED1-4B30-BE16-BEA56CD23416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72E5809E-BED1-4B30-BE16-BEA56CD23416}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72E5809E-BED1-4B30-BE16-BEA56CD23416}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5193A994-9107-4E17-875E-05530E40D7CD}
+	EndGlobalSection
+EndGlobal
