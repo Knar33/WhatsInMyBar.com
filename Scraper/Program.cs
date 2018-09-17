@@ -10,7 +10,7 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
-            GetRecipesRequest request = new GetRecipesRequest();
+            GetRecipesRequest request = new GetRecipesRequest("Vodka");
             var response = request.Send();
 
             //Load existing ingredient and recipe list from the Database. If no ingredients are found in the database (first scrape), use hard coded list. 
