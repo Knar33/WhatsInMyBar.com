@@ -12,7 +12,7 @@ namespace Scraper
     {
         public int count { get; set; }
         public bool success { get; set; }
-        public Recipe[] recipes { get; set; }
+        public List<Recipe> recipes { get; set; }
         public string Content { get; set; }
         public HttpStatusCode StatusCode { get; set; }
 
@@ -39,29 +39,49 @@ namespace Scraper
 
     public class Recipe
     {
+        public Recipe()
+        {
+
+        }
+
         public string id { get; set; }
         public Title title { get; set; }
         public string link { get; set; }
         public string thumbnail { get; set; }
-        public Ingredient[] ingredients { get; set; }
-        public Basis[] bases { get; set; }
-        public Flavor[] flavors { get; set; }
+        public List<Ingredient> ingredients { get; set; }
+        public List<Basis> bases { get; set; }
+        public List<Flavor> flavors { get; set; }
         public string description { get; set; }
     }
 
     public class Title
     {
+        public Title()
+        {
+
+        }
+
         public string rendered { get; set; }
     }
 
     public class Ingredient
     {
+        public Ingredient()
+        {
+
+        }
+
         public string ingredient_id { get; set; }
         public string name { get; set; }
     }
 
     public class Basis
     {
+        public Basis()
+        {
+
+        }
+
         public int term_id { get; set; }
         public string name { get; set; }
         public string slug { get; set; }
@@ -76,6 +96,11 @@ namespace Scraper
 
     public class Flavor
     {
+        public Flavor()
+        {
+
+        }
+
         public int term_id { get; set; }
         public string name { get; set; }
         public string slug { get; set; }
