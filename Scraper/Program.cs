@@ -10,6 +10,8 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
+            GetRecipesRequest request = new GetRecipesRequest();
+            var response = request.Send();
         }
     }
 }
