@@ -10,6 +10,12 @@ namespace Scraper
 {
     class GetRecipesRequest
     {
+        public GetRecipesRequest(string ingredient, int page)
+        {
+            Ingredient = ingredient;
+            Page = page;
+        }
+
         public string Ingredient { get; set; }
         public int Page { get; set; }
 
@@ -23,12 +29,6 @@ namespace Scraper
             var res = client.Execute<GetRecipesResponse>(request);
 
             return new GetRecipesResponse(res);
-        }
-
-        public GetRecipesRequest(string ingredient, int page)
-        {
-            Ingredient = ingredient;
-            Page = page;
         }
     }
 }
