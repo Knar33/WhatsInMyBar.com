@@ -60,8 +60,9 @@ namespace Scraper
                 List<Ingredient> newIngredients = new List<Ingredient>();
 
                 //Iterate over list of ingredients and do a GetRecipeRequest.
-                foreach (Ingredient ingredient in ingredients)
+                foreach (Ingredient ingredient in ingredients.Where(x => !x.Scraped))
                 {
+                    Console.WriteLine(ingredient.name);
                     GetRecipesRequest request = new GetRecipesRequest(ingredient.name, 1);
                     var response = request.Send();
 
@@ -69,10 +70,6 @@ namespace Scraper
                     decimal pages = Math.Ceiling(response.count / 24m);
                     for (int i = 1; i <= pages; i++)
                     {
-                        Console.WriteLine("====================================================================");
-                        Console.WriteLine("{0} - Page {1}", ingredient.name, i);
-                        Console.WriteLine("====================================================================");
-
                         GetRecipesRequest innerRequest = new GetRecipesRequest(ingredient.name, i);
                         var innerResponse = innerRequest.Send();
                         //Check if the each recipe is already in the Recipes collection. If not, add it and set IsNew = true.
