@@ -40,6 +40,7 @@ namespace Scraper
     {
         public Recipe()
         {
+            IsNew = false;
         }
 
         public string id { get; set; }
@@ -50,6 +51,7 @@ namespace Scraper
         public List<Basis> bases { get; set; }
         public List<Flavor> flavors { get; set; }
         public string description { get; set; }
+        public bool IsNew { get; set; }
     }
 
     public class Title
