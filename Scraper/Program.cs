@@ -65,9 +65,26 @@ namespace Scraper
 
                     //Calculate how many pages are in the response
                     decimal pages = Math.Ceiling(response.count / 24m);
+
                     //Check if the each recipe is already in the Recipes collection. If not, add it and set IsNew = true.
-                    //Check every ingredient in the added recipe to see if it's in the Ingredients collection. If not add it.
-                    //Set the Scraped boolean on the ingredient to True
+                    foreach (Recipe recipe in response.recipes)
+                    {
+                        if (!recipes.Any(x => x.id == recipe.id))
+                        {
+                            recipe.IsNew = true;
+                            recipes.Add(recipe);
+                            //Check every ingredient in the added recipe to see if it's in the Ingredients collection. If not add it.
+                            foreach (Ingredient newIngredient in recipe.ingredients)
+                            {
+                                if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
+                                {
+                                    //Set the Scraped boolean on the ingredient to True (IsNew)
+                                    ingredient.IsNew = true;
+                                    ingredients.Add(newIngredient);
+                                }
+                            }
+                        }
+                    }
                     //Check to see if there any ingrednents that haven't been Scraped. If there are, repeat until there aren't. Otherwise terminate the program.
 
                     //After all recipes are scraped, do a massive Merge into the database. Merge all Recipes and Ingredients.
