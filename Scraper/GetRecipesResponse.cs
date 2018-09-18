@@ -67,10 +67,12 @@ namespace Scraper
     {
         public Ingredient()
         {
+            IsNew = false;
         }
 
         public string ingredient_id { get; set; }
         public string name { get; set; }
+        public bool IsNew { get; set; }
     }
 
     public class Basis
