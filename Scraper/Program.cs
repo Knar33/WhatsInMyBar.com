@@ -10,6 +10,9 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
+            List<Ingredient> ingredients = new List<Ingredient>();
+            List<Recipe> recipes = new List<Recipe>();
+
             GetRecipesRequest request = new GetRecipesRequest("Vodka", 1);
             var response = request.Send();
 
