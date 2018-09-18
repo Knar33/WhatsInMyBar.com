@@ -13,6 +13,13 @@ namespace Scraper
             IsNew = false;
         }
 
+        public Ingredient(string id, string name)
+        {
+            ingredient_id = id;
+            this.name = name;
+            IsNew = false;
+        }
+
         public string ingredient_id { get; set; }
         public string name { get; set; }
         public bool IsNew { get; set; }
