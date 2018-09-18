@@ -16,6 +16,10 @@ namespace Scraper
         public string Content { get; set; }
         public HttpStatusCode StatusCode { get; set; }
 
+        public GetRecipesResponse()
+        {
+        }
+
         public GetRecipesResponse(IRestResponse<GetRecipesResponse> res)
         {
             StatusCode = res.StatusCode;
@@ -30,18 +34,12 @@ namespace Scraper
                 Content = res.Content;
             }
         }
-
-        public GetRecipesResponse()
-        {
-
-        }
     }
 
     public class Recipe
     {
         public Recipe()
         {
-
         }
 
         public string id { get; set; }
@@ -58,7 +56,6 @@ namespace Scraper
     {
         public Title()
         {
-
         }
 
         public string rendered { get; set; }
@@ -68,7 +65,6 @@ namespace Scraper
     {
         public Ingredient()
         {
-
         }
 
         public string ingredient_id { get; set; }
@@ -79,7 +75,6 @@ namespace Scraper
     {
         public Basis()
         {
-
         }
 
         public int term_id { get; set; }
@@ -98,7 +93,6 @@ namespace Scraper
     {
         public Flavor()
         {
-
         }
 
         public int term_id { get; set; }
