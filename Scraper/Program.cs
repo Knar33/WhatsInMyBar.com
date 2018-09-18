@@ -57,6 +57,8 @@ namespace Scraper
             bool ingredientsLeft = true;
             while (ingredientsLeft)
             {
+                List<Ingredient> newIngredients = new List<Ingredient>();
+
                 //Iterate over list of ingredients and do a GetRecipeRequest.
                 foreach (Ingredient ingredient in ingredients)
                 {
@@ -65,32 +67,50 @@ namespace Scraper
 
                     //Calculate how many pages are in the response
                     decimal pages = Math.Ceiling(response.count / 24m);
-
-                    //Check if the each recipe is already in the Recipes collection. If not, add it and set IsNew = true.
-                    foreach (Recipe recipe in response.recipes)
+                    for (int i = 1; i <= pages; i++)
                     {
-                        if (!recipes.Any(x => x.id == recipe.id))
+                        Console.WriteLine("====================================================================");
+                        Console.WriteLine("{0} - Page {1}", ingredient.name, i);
+                        Console.WriteLine("====================================================================");
+
+                        GetRecipesRequest innerRequest = new GetRecipesRequest(ingredient.name, i);
+                        var innerResponse = innerRequest.Send();
+                        //Check if the each recipe is already in the Recipes collection. If not, add it and set IsNew = true.
+                        foreach (Recipe recipe in innerResponse.recipes)
                         {
-                            recipe.IsNew = true;
-                            recipes.Add(recipe);
-                            //Check every ingredient in the added recipe to see if it's in the Ingredients collection. If not add it.
-                            foreach (Ingredient newIngredient in recipe.ingredients)
+                            if (!recipes.Any(x => x.id == recipe.id))
                             {
-                                if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
+                                Console.WriteLine("{0}", recipe.title.rendered);
+                                recipe.IsNew = true;
+                                recipes.Add(recipe);
+                                //Check every ingredient in the added recipe to see if it's in the Ingredients collection. If not add it.
+                                foreach (Ingredient newIngredient in recipe.ingredients)
                                 {
-                                    //Set the Scraped boolean on the ingredient to True (IsNew)
-                                    ingredient.IsNew = true;
-                                    ingredients.Add(newIngredient);
+                                    if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id) && !newIngredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
+                                    {
+                                        ingredient.IsNew = true;
+                                        newIngredients.Add(newIngredient);
+                                    }
                                 }
                             }
                         }
                     }
-                    //Check to see if there any ingrednents that haven't been Scraped. If there are, repeat until there aren't. Otherwise terminate the program.
-
-                    //After all recipes are scraped, do a massive Merge into the database. Merge all Recipes and Ingredients.
-                    //for all Recipes with IsNew, download thumbnail image
+                    //Set the Scraped boolean on the ingredient to True (IsNew)
+                    ingredient.Scraped = true;
                 }
+
+                foreach (Ingredient newIngredient in newIngredients)
+                {
+                    ingredients.Add(newIngredient);
+                }
+
+                //Check to see if there any ingredients that haven't been Scraped. If there are, repeat until there aren't. Otherwise terminate the program.
+                ingredientsLeft = ingredients.Any(x => !x.Scraped);
             }
+
+            Console.ReadLine();
+            //After all recipes are scraped, do a massive Merge into the database. Merge all Recipes and Ingredients.
+            //for all Recipes with IsNew, download thumbnail image
         }
     }
 }
