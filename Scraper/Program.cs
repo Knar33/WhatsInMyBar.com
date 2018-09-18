@@ -77,9 +77,10 @@ namespace Scraper
                         {
                             if (!recipes.Any(x => x.id == recipe.id))
                             {
-                                Console.WriteLine("{0}", recipe.title.rendered);
                                 recipe.IsNew = true;
                                 recipes.Add(recipe);
+                                //database insert new recipe
+
                                 //Check every ingredient in the added recipe to see if it's in the Ingredients collection. If not add it.
                                 foreach (Ingredient newIngredient in recipe.ingredients)
                                 {
@@ -87,6 +88,7 @@ namespace Scraper
                                     {
                                         ingredient.IsNew = true;
                                         newIngredients.Add(newIngredient);
+                                        //database insert new recipe
                                     }
                                 }
                             }
