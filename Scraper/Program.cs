@@ -14,7 +14,7 @@ namespace Scraper
             List<Ingredient> ingredients = GetIngredientsFromDatabase();
             if (ingredients.Count() == 0)
             {
-
+                ingredients = GetHardCodedIngredients();
             }
 
             bool ingredientsLeft = true;
@@ -24,14 +24,12 @@ namespace Scraper
                 foreach (Ingredient ingredient in ingredients.Where(x => !x.Scraped))
                 {
                     Console.WriteLine(ingredient.name);
-                    GetRecipesRequest request = new GetRecipesRequest(ingredient.name, 1);
-                    var response = request.Send();
+                    var response = (new GetRecipesRequest(ingredient.name, 1)).Send();
 
                     decimal pages = Math.Ceiling(response.count / 24m);
                     for (int i = 1; i <= pages; i++)
                     {
-                        GetRecipesRequest innerRequest = new GetRecipesRequest(ingredient.name, i);
-                        var innerResponse = innerRequest.Send();
+                        var innerResponse = (new GetRecipesRequest(ingredient.name, i)).Send();
                         foreach (Recipe recipe in innerResponse.recipes)
                         {
                             if (!recipes.Any(x => x.id == recipe.id))
@@ -78,7 +76,7 @@ namespace Scraper
             return recipes;
         }
 
-        public List<Ingredient> GetHardCodedIngredients()
+        public static List<Ingredient> GetHardCodedIngredients()
         {
             List<Ingredient> ingredients = new List<Ingredient>();
             ingredients.Add(new Ingredient("10772", "Absinthe"));
