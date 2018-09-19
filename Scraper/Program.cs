@@ -24,12 +24,12 @@ namespace Scraper
                 foreach (Ingredient ingredient in ingredients.Where(x => !x.Scraped))
                 {
                     Console.WriteLine(ingredient.name);
-                    var response = (new GetRecipesRequest(ingredient.name, 1)).Send();
+                    GetRecipesResponse response = (new GetRecipesRequest(ingredient.name, 1)).Send();
 
                     decimal pages = Math.Ceiling(response.count / 24m);
                     for (int i = 1; i <= pages; i++)
                     {
-                        var innerResponse = (new GetRecipesRequest(ingredient.name, i)).Send();
+                        GetRecipesResponse innerResponse = (new GetRecipesRequest(ingredient.name, i)).Send();
                         foreach (Recipe recipe in innerResponse.recipes)
                         {
                             if (!recipes.Any(x => x.id == recipe.id))
