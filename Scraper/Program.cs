@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,7 +41,8 @@ namespace Scraper
                                 recipe.IsNew = true;
                                 recipes.Add(recipe);
                                 //database insert new recipe
-                                //download thumbnail image
+
+                                DownloadThumbnail(recipe);
                                 foreach (Ingredient newIngredient in recipe.ingredients)
                                 {
                                     if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id) && !newIngredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
@@ -63,7 +68,31 @@ namespace Scraper
 
             Console.ReadLine();
         }
-        
+
+        public static void DownloadThumbnail(Recipe recipe)
+        {
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    byte[] data = webClient.DownloadData(recipe.thumbnail);
+
+                    using (MemoryStream mem = new MemoryStream(data))
+                    {
+                        using (var yourImage = Image.FromStream(mem))
+                        {
+                            yourImage.Save("path_to_your_file.jpg", ImageFormat.Jpeg);
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         public static List<Ingredient> GetIngredientsFromDatabase()
         {
             List<Ingredient> ingredients = new List<Ingredient>();
