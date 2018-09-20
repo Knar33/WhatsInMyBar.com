@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatsInMyBar.Tests", "Whats
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scraper", "Scraper\Scraper.csproj", "{AA45C327-6364-42A6-B3B2-BB86875F6258}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WhatsInMyBar.Database", "WhatsInMyBar.Database\WhatsInMyBar.Database.sqlproj", "{C907FC95-1DD0-4CAA-9853-74D74BBCFA57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,12 @@ Global
 		{AA45C327-6364-42A6-B3B2-BB86875F6258}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA45C327-6364-42A6-B3B2-BB86875F6258}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA45C327-6364-42A6-B3B2-BB86875F6258}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C907FC95-1DD0-4CAA-9853-74D74BBCFA57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C907FC95-1DD0-4CAA-9853-74D74BBCFA57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C907FC95-1DD0-4CAA-9853-74D74BBCFA57}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C907FC95-1DD0-4CAA-9853-74D74BBCFA57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C907FC95-1DD0-4CAA-9853-74D74BBCFA57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C907FC95-1DD0-4CAA-9853-74D74BBCFA57}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
