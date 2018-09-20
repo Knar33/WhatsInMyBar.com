@@ -40,8 +40,7 @@ namespace Scraper
                             {
                                 recipe.IsNew = true;
                                 recipes.Add(recipe);
-                                //database insert new recipe
-
+                                InsertRecipe(recipe);
                                 DownloadThumbnail(recipe);
                                 foreach (Ingredient newIngredient in recipe.ingredients)
                                 {
@@ -49,7 +48,7 @@ namespace Scraper
                                     {
                                         ingredient.IsNew = true;
                                         newIngredients.Add(newIngredient);
-                                        //database insert new recipe
+                                        InsertIngredient(newIngredient);
                                     }
                                 }
                             }
@@ -89,8 +88,18 @@ namespace Scraper
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
+        }
+
+        public static void InsertRecipe(Recipe recipe)
+        {
+
+        }
+
+        public static void InsertIngredient(Ingredient ingredient)
+        {
+
         }
 
         public static List<Ingredient> GetIngredientsFromDatabase()
