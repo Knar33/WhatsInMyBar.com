@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace Scraper
 {
@@ -74,13 +75,15 @@ namespace Scraper
             {
                 using (WebClient webClient = new WebClient())
                 {
-                    byte[] data = webClient.DownloadData(recipe.thumbnail);
+                    string thumbnailURI = string.Format("http://{0}", recipe.thumbnail.TrimStart('/'));
+                    byte[] data = webClient.DownloadData(thumbnailURI);
 
                     using (MemoryStream mem = new MemoryStream(data))
                     {
                         using (var yourImage = Image.FromStream(mem))
                         {
-                            yourImage.Save("path_to_your_file.jpg", ImageFormat.Jpeg);
+                            string imageURL = string.Format("{0}{1}.jpg", ConfigurationManager.AppSettings["LocalImagePath"], recipe.id);
+                            yourImage.Save(imageURL, ImageFormat.Jpeg);
                         }
                     }
 
