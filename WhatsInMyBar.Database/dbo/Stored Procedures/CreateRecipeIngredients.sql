@@ -3,13 +3,13 @@
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE [dbo].[CreateIngredients]
+CREATE PROCEDURE [dbo].[CreateRecipeIngredients]
 	@IngredientID INT,
-	@Name Varchar(1024)
+	@RecipeID INT
 AS
 BEGIN
 	SET NOCOUNT ON;
 
-	INSERT INTO Ingredients (IngredientID, Name, DateCreated) VALUES (@IngredientID, @Name, SYSDATETIMEOFFSET())
+	INSERT INTO RecipeIngredients (IngredientID, RecipeID, DateCreated) VALUES (@IngredientID, @RecipeID, SYSDATETIMEOFFSET())
 	
 END
