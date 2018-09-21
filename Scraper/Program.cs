@@ -12,6 +12,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data;
 using WhatsInMyBar.Extensions;
+using RestSharp;
 
 namespace Scraper
 {
