@@ -8,11 +8,6 @@ namespace Scraper
 {
     public class Recipe
     {
-        public Recipe()
-        {
-            IsNew = false;
-        }
-
         public int id { get; set; }
         public Title title { get; set; }
         public string link { get; set; }
@@ -21,6 +16,5 @@ namespace Scraper
         public List<Basis> bases { get; set; }
         public List<Flavor> flavors { get; set; }
         public string description { get; set; }
-        public bool IsNew { get; set; }
     }
 }

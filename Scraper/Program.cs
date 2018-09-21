@@ -43,7 +43,6 @@ namespace Scraper
                         {
                             if (!recipes.Any(x => x.id == recipe.id))
                             {
-                                recipe.IsNew = true;
                                 recipes.Add(recipe);
                                 InsertRecipe(recipe);
                                 DownloadThumbnail(recipe);
@@ -51,7 +50,6 @@ namespace Scraper
                                 {
                                     if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id) && !newIngredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
                                     {
-                                        ingredient.IsNew = true;
                                         newIngredients.Add(newIngredient);
                                         InsertIngredient(newIngredient, recipe.id);
                                     }
@@ -174,7 +172,6 @@ namespace Scraper
                                 ingredient_id = reader.GetValueOrDefault<int>("IngredientID"),
                                 Category = reader.GetValueOrDefault<int>("CategoryID"),
                                 name = reader.GetValueOrDefault<string>("Name"),
-                                IsNew = false,
                                 Scraped = true
                             });
                         }
@@ -213,8 +210,7 @@ namespace Scraper
                                 title = new Title { rendered = reader.GetValueOrDefault<string>("Name") },
                                 link = reader.GetValueOrDefault<string>("Link"),
                                 thumbnail = reader.GetValueOrDefault<string>("Thumbnail"),
-                                description = reader.GetValueOrDefault<string>("Description"),
-                                IsNew = false
+                                description = reader.GetValueOrDefault<string>("Description")
                             });
                         }
                     }
