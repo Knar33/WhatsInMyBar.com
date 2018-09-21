@@ -22,7 +22,7 @@ namespace Scraper
             Scraped = false;
         }
 
-        public string ingredient_id { get; set; }
+        public int ingredient_id { get; set; }
         public string name { get; set; }
         public bool IsNew { get; set; }
         public bool Scraped { get; set; }
