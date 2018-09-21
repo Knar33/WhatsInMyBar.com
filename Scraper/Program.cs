@@ -55,6 +55,7 @@ namespace Scraper
                                             newIngredients.Add(newIngredient);
                                             InsertIngredient(newIngredient, recipe.id);
                                         }
+                                        InsertRecipeIngredient(newIngredient, recipe.id);
                                     }
                                 }
                             }
@@ -142,6 +143,30 @@ namespace Scraper
                     cmd.AddParameter("@IngredientID", ingredient.ingredient_id);
                     cmd.AddParameter("@RecipeID", RecipeID);
                     cmd.AddParameter("@Name", ingredient.name);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public static void InsertRecipeIngredient(Ingredient ingredient, int RecipeID)
+        {
+            try
+            {
+                DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
+                dbConnection.Open();
+                using (var cmd = dbConnection.CreateCommand())
+                {
+                    cmd.CommandText = "CreateRecipeIngredients";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
+
+                    cmd.AddParameter("@IngredientID", ingredient.ingredient_id);
+                    cmd.AddParameter("@RecipeID", RecipeID);
 
                     cmd.ExecuteNonQuery();
                 }
