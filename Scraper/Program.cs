@@ -165,7 +165,7 @@ namespace Scraper
                     dbConnection.Open();
                     using (var cmd = dbConnection.CreateCommand())
                     {
-                        cmd.CommandText = "CreateIngredients";
+                        cmd.CommandText = "CreateRecipeIngredients";
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
 
