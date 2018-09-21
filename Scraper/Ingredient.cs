@@ -10,7 +10,6 @@ namespace Scraper
     {
         public Ingredient()
         {
-            IsNew = false;
             Scraped = false;
         }
 
@@ -18,14 +17,12 @@ namespace Scraper
         {
             ingredient_id = id;
             this.name = name;
-            IsNew = false;
             Scraped = false;
         }
 
         public int ingredient_id { get; set; }
         public int? Category { get; set; }
         public string name { get; set; }
-        public bool IsNew { get; set; }
         public bool Scraped { get; set; }
     }
 }
