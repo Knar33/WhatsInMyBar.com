@@ -11,6 +11,6 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	INSERT INTO Ingredients (IngredientID, RecipeID, Name, DateCreated) VALUES (@IngredientID, @IngredientID, @Name, SYSDATETIMEOFFSET())
+	INSERT INTO Ingredients (IngredientID, RecipeID, Name, DateCreated) VALUES (@IngredientID, @RecipeID, @Name, SYSDATETIMEOFFSET())
 	
 END
