@@ -101,7 +101,29 @@ namespace Scraper
 
         public static void InsertRecipe(Recipe recipe)
         {
+            try
+            {
+                DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
+                dbConnection.Open();
+                using (var cmd = dbConnection.CreateCommand())
+                {
+                    cmd.CommandText = "CreateRecipes";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
 
+                    cmd.AddParameter("@RecipeID", recipe.id);
+                    cmd.AddParameter("@Name", recipe.title.rendered);
+                    cmd.AddParameter("@Link", recipe.link);
+                    cmd.AddParameter("@Thumbnail", recipe.thumbnail);
+                    cmd.AddParameter("@Description", recipe.description);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public static void InsertIngredient(Ingredient ingredient)
