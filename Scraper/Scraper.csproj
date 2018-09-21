@@ -78,5 +78,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WhatsInMyBar\WhatsInMyBar.csproj">
+      <Project>{f26d5eb4-56ea-47b2-b190-8f00ea0ea0af}</Project>
+      <Name>WhatsInMyBar</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
