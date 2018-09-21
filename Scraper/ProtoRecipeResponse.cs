@@ -30,8 +30,8 @@ namespace Scraper
         public string comment_status { get; set; }
         public string ping_status { get; set; }
         public string template { get; set; }
-        public object[] meta { get; set; }
-        public object[] categories { get; set; }
+        public List<object> meta { get; set; }
+        public List<object> categories { get; set; }
         public _Links _links { get; set; }
     }
 
@@ -58,7 +58,7 @@ namespace Scraper
         public List<About> about { get; set; }
         public List<Author> author { get; set; }
         public List<Reply> replies { get; set; }
-        public List<WpAttachment[] wpattachment { get; set; }
+        public List<WpAttachment> wpattachment { get; set; }
         public List<WpTerm> wpterm { get; set; }
         public List<Cury> curies { get; set; }
         public List<WpFeaturedmedia> wpfeaturedmedia { get; set; }

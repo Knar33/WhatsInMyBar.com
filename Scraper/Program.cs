@@ -20,6 +20,15 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
+            RestClient client = new RestClient("https://www.liquor.com/wp-json/wp/v2/recipes?page=1");
+            RestRequest request = new RestRequest(Method.GET);
+            var res = client.Execute<List<GetRecipesResponse>>(request);
+            int protoRecipeCount = 1;
+            if (res.IsSuccessful)
+            {
+                protoRecipeCount = (int)(res.Headers.FirstOrDefault(x => x.Name == "X-WP-TotalPages").Value);
+            }
+
             List<Recipe> recipes = GetRecipesFromDatabase();
             List<Ingredient> ingredients = GetIngredientsFromDatabase();
             if (ingredients.Count() == 0)
@@ -263,6 +272,13 @@ namespace Scraper
             return recipes;
         }
 
+        public IRestResponse GetProtoRecipes(int page)
+        {
+            var client = new RestClient("https://www.liquor.com/wp-json/wp/v2/recipes?page=" + page);
+            var request = new RestRequest(Method.GET);
+            return client.Execute<List<GetRecipesResponse>>(request);
+        }
+            
         public static List<Ingredient> GetHardCodedIngredients()
         {
             List<Ingredient> ingredients = new List<Ingredient>();
