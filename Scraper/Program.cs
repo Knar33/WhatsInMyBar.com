@@ -53,7 +53,7 @@ namespace Scraper
                                     {
                                         ingredient.IsNew = true;
                                         newIngredients.Add(newIngredient);
-                                        InsertIngredient(newIngredient);
+                                        InsertIngredient(newIngredient, recipe.id);
                                     }
                                 }
                             }
@@ -126,7 +126,7 @@ namespace Scraper
             }
         }
 
-        public static void InsertIngredient(Ingredient ingredient)
+        public static void InsertIngredient(Ingredient ingredient, int RecipeID)
         {
             try
             {
@@ -139,6 +139,7 @@ namespace Scraper
                     cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
 
                     cmd.AddParameter("@IngredientID", ingredient.ingredient_id);
+                    cmd.AddParameter("@RecipeID", RecipeID);
                     cmd.AddParameter("@Name", ingredient.name);
 
                     cmd.ExecuteNonQuery();
