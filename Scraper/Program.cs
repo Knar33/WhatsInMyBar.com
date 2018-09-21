@@ -128,35 +128,61 @@ namespace Scraper
 
         public static void InsertIngredient(Ingredient ingredient)
         {
+            try
+            {
+                DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
+                dbConnection.Open();
+                using (var cmd = dbConnection.CreateCommand())
+                {
+                    cmd.CommandText = "CreateIngredients";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
 
+                    cmd.AddParameter("@IngredientID", ingredient.ingredient_id);
+                    cmd.AddParameter("@Name", ingredient.name);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public static List<Ingredient> GetIngredientsFromDatabase()
         {
             List<Ingredient> ingredients = new List<Ingredient>();
 
-            DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
-            dbConnection.Open();
-            using (var cmd = dbConnection.CreateCommand())
+            try
             {
-                cmd.CommandText = "GetAllIngredients";
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
-
-                using (var reader = cmd.ExecuteReader())
+                DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
+                dbConnection.Open();
+                using (var cmd = dbConnection.CreateCommand())
                 {
-                    while (reader.Read())
+                    cmd.CommandText = "GetAllIngredients";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        ingredients.Add(new Ingredient
+                        while (reader.Read())
                         {
-                            ingredient_id = reader.GetValueOrDefault<int>("IngredientID"),
-                            Category = reader.GetValueOrDefault<int>("CategoryID"),
-                            name = reader.GetValueOrDefault<string>("Name"),
-                            IsNew = false,
-                            Scraped = false
-                        });
+                            ingredients.Add(new Ingredient
+                            {
+                                ingredient_id = reader.GetValueOrDefault<int>("IngredientID"),
+                                Category = reader.GetValueOrDefault<int>("CategoryID"),
+                                name = reader.GetValueOrDefault<string>("Name"),
+                                IsNew = false,
+                                Scraped = false
+                            });
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
             return ingredients;
@@ -166,29 +192,36 @@ namespace Scraper
         {
             List<Recipe> recipes = new List<Recipe>();
 
-            DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
-            dbConnection.Open();
-            using (var cmd = dbConnection.CreateCommand())
+            try
             {
-                cmd.CommandText = "GetAllRecipes";
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
-
-                using (var reader = cmd.ExecuteReader())
+                DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
+                dbConnection.Open();
+                using (var cmd = dbConnection.CreateCommand())
                 {
-                    while (reader.Read())
+                    cmd.CommandText = "GetAllRecipes";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        recipes.Add(new Recipe
+                        while (reader.Read())
                         {
-                            id = reader.GetValueOrDefault<int>("RecipeID"),
-                            title = new Title { rendered = reader.GetValueOrDefault<string>("Name") },
-                            link = reader.GetValueOrDefault<string>("Link"),
-                            thumbnail = reader.GetValueOrDefault<string>("Thumbnail"),
-                            description = reader.GetValueOrDefault<string>("Description"),
-                            IsNew = false
-                        });
+                            recipes.Add(new Recipe
+                            {
+                                id = reader.GetValueOrDefault<int>("RecipeID"),
+                                title = new Title { rendered = reader.GetValueOrDefault<string>("Name") },
+                                link = reader.GetValueOrDefault<string>("Link"),
+                                thumbnail = reader.GetValueOrDefault<string>("Thumbnail"),
+                                description = reader.GetValueOrDefault<string>("Description"),
+                                IsNew = false
+                            });
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
             return recipes;
