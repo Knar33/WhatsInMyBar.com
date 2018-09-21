@@ -20,9 +20,7 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
-            RestClient client = new RestClient("https://www.liquor.com/wp-json/wp/v2/recipes?page=1");
-            RestRequest request = new RestRequest(Method.GET);
-            var res = client.Execute<List<GetRecipesResponse>>(request);
+            var res = GetProtoRecipes(1);
             int protoRecipeCount = 1;
             if (res.IsSuccessful)
             {
@@ -272,9 +270,10 @@ namespace Scraper
             return recipes;
         }
 
-        public IRestResponse GetProtoRecipes(int page)
+        public static IRestResponse<List<GetRecipesResponse>> GetProtoRecipes(int page)
         {
-            var client = new RestClient("https://www.liquor.com/wp-json/wp/v2/recipes?page=" + page);
+            string url = string.Format("{0}?page={1}", ConfigurationManager.AppSettings["APIURL"], page);
+            var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
             return client.Execute<List<GetRecipesResponse>>(request);
         }
