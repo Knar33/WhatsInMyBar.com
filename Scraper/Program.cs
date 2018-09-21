@@ -39,19 +39,22 @@ namespace Scraper
                     for (int i = 1; i <= pages; i++)
                     {
                         GetRecipesResponse innerResponse = (new GetRecipesRequest(ingredient.name, i)).Send();
-                        foreach (Recipe recipe in innerResponse.recipes)
+                        if (innerResponse.recipes?.Count() > 0)
                         {
-                            if (!recipes.Any(x => x.id == recipe.id))
+                            foreach (Recipe recipe in innerResponse.recipes)
                             {
-                                recipes.Add(recipe);
-                                InsertRecipe(recipe);
-                                DownloadThumbnail(recipe);
-                                foreach (Ingredient newIngredient in recipe.ingredients)
+                                if (!recipes.Any(x => x.id == recipe.id))
                                 {
-                                    if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id) && !newIngredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
+                                    recipes.Add(recipe);
+                                    InsertRecipe(recipe);
+                                    DownloadThumbnail(recipe);
+                                    foreach (Ingredient newIngredient in recipe.ingredients)
                                     {
-                                        newIngredients.Add(newIngredient);
-                                        InsertIngredient(newIngredient, recipe.id);
+                                        if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id) && !newIngredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
+                                        {
+                                            newIngredients.Add(newIngredient);
+                                            InsertIngredient(newIngredient, recipe.id);
+                                        }
                                     }
                                 }
                             }
