@@ -127,8 +127,9 @@ namespace Scraper
                     {
                         ingredients.Add(new Ingredient
                         {
-                            ingredient_id = reader.GetValueOrDefault<int>("ShipmentID"),
-                            name = reader.GetValueOrDefault<string>("DateCreated"),
+                            ingredient_id = reader.GetValueOrDefault<int>("IngredientID"),
+                            Category = reader.GetValueOrDefault<int>("CategoryID"),
+                            name = reader.GetValueOrDefault<string>("Name"),
                             IsNew = false,
                             Scraped = false
                         });
@@ -157,10 +158,12 @@ namespace Scraper
                     {
                         recipes.Add(new Recipe
                         {
-                            ingredient_id = reader.GetValueOrDefault<int>("ShipmentID"),
-                            name = reader.GetValueOrDefault<string>("DateCreated"),
-                            IsNew = false,
-                            Scraped = false
+                            id = reader.GetValueOrDefault<int>("RecipeID"),
+                            title = new Title { rendered = reader.GetValueOrDefault<string>("Name") },
+                            link = reader.GetValueOrDefault<string>("Link"),
+                            thumbnail = reader.GetValueOrDefault<string>("Thumbnail"),
+                            description = reader.GetValueOrDefault<string>("Description"),
+                            IsNew = false
                         });
                     }
                 }

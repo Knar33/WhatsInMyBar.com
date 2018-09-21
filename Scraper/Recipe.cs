@@ -13,7 +13,7 @@ namespace Scraper
             IsNew = false;
         }
 
-        public string id { get; set; }
+        public int id { get; set; }
         public Title title { get; set; }
         public string link { get; set; }
         public string thumbnail { get; set; }
