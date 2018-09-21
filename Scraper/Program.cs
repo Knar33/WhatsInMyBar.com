@@ -105,21 +105,23 @@ namespace Scraper
         {
             try
             {
-                DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
-                dbConnection.Open();
-                using (var cmd = dbConnection.CreateCommand())
+                using (DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString))
                 {
-                    cmd.CommandText = "CreateRecipes";
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
+                    dbConnection.Open();
+                    using (var cmd = dbConnection.CreateCommand())
+                    {
+                        cmd.CommandText = "CreateRecipes";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
 
-                    cmd.AddParameter("@RecipeID", recipe.id);
-                    cmd.AddParameter("@Name", recipe.title.rendered);
-                    cmd.AddParameter("@Link", recipe.link);
-                    cmd.AddParameter("@Thumbnail", recipe.thumbnail);
-                    cmd.AddParameter("@Description", recipe.description);
+                        cmd.AddParameter("@RecipeID", recipe.id);
+                        cmd.AddParameter("@Name", recipe.title.rendered);
+                        cmd.AddParameter("@Link", recipe.link);
+                        cmd.AddParameter("@Thumbnail", recipe.thumbnail);
+                        cmd.AddParameter("@Description", recipe.description);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
             catch(Exception ex)
@@ -132,18 +134,20 @@ namespace Scraper
         {
             try
             {
-                DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
-                dbConnection.Open();
-                using (var cmd = dbConnection.CreateCommand())
+                using (DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString))
                 {
-                    cmd.CommandText = "CreateIngredients";
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
+                    dbConnection.Open();
+                    using (var cmd = dbConnection.CreateCommand())
+                    {
+                        cmd.CommandText = "CreateIngredients";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
 
-                    cmd.AddParameter("@IngredientID", ingredient.ingredient_id);
-                    cmd.AddParameter("@Name", ingredient.name);
+                        cmd.AddParameter("@IngredientID", ingredient.ingredient_id);
+                        cmd.AddParameter("@Name", ingredient.name);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception ex)
@@ -156,18 +160,20 @@ namespace Scraper
         {
             try
             {
-                DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
-                dbConnection.Open();
-                using (var cmd = dbConnection.CreateCommand())
+                using (DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString))
                 {
-                    cmd.CommandText = "CreateRecipeIngredients";
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
+                    dbConnection.Open();
+                    using (var cmd = dbConnection.CreateCommand())
+                    {
+                        cmd.CommandText = "CreateIngredients";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
 
-                    cmd.AddParameter("@IngredientID", ingredient.ingredient_id);
-                    cmd.AddParameter("@RecipeID", RecipeID);
+                        cmd.AddParameter("@IngredientID", ingredient.ingredient_id);
+                        cmd.AddParameter("@Name", ingredient.name);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception ex)
@@ -182,25 +188,27 @@ namespace Scraper
 
             try
             {
-                DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
-                dbConnection.Open();
-                using (var cmd = dbConnection.CreateCommand())
+                using (DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString))
                 {
-                    cmd.CommandText = "GetAllIngredients";
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
-
-                    using (var reader = cmd.ExecuteReader())
+                    dbConnection.Open();
+                    using (var cmd = dbConnection.CreateCommand())
                     {
-                        while (reader.Read())
+                        cmd.CommandText = "GetAllIngredients";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
+
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            ingredients.Add(new Ingredient
+                            while (reader.Read())
                             {
-                                ingredient_id = reader.GetValueOrDefault<int>("IngredientID"),
-                                Category = reader.GetValueOrDefault<int>("CategoryID"),
-                                name = reader.GetValueOrDefault<string>("Name"),
-                                Scraped = false
-                            });
+                                ingredients.Add(new Ingredient
+                                {
+                                    ingredient_id = reader.GetValueOrDefault<int>("IngredientID"),
+                                    Category = reader.GetValueOrDefault<int>("CategoryID"),
+                                    name = reader.GetValueOrDefault<string>("Name"),
+                                    Scraped = false
+                                });
+                            }
                         }
                     }
                 }
@@ -219,29 +227,32 @@ namespace Scraper
 
             try
             {
-                DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
-                dbConnection.Open();
-                using (var cmd = dbConnection.CreateCommand())
+                using (DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString))
                 {
-                    cmd.CommandText = "GetAllRecipes";
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
-
-                    using (var reader = cmd.ExecuteReader())
+                    dbConnection.Open();
+                    using (var cmd = dbConnection.CreateCommand())
                     {
-                        while (reader.Read())
+                        cmd.CommandText = "GetAllRecipes";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
+
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            recipes.Add(new Recipe
+                            while (reader.Read())
                             {
-                                id = reader.GetValueOrDefault<int>("RecipeID"),
-                                title = new Title { rendered = reader.GetValueOrDefault<string>("Name") },
-                                link = reader.GetValueOrDefault<string>("Link"),
-                                thumbnail = reader.GetValueOrDefault<string>("Thumbnail"),
-                                description = reader.GetValueOrDefault<string>("Description")
-                            });
+                                recipes.Add(new Recipe
+                                {
+                                    id = reader.GetValueOrDefault<int>("RecipeID"),
+                                    title = new Title { rendered = reader.GetValueOrDefault<string>("Name") },
+                                    link = reader.GetValueOrDefault<string>("Link"),
+                                    thumbnail = reader.GetValueOrDefault<string>("Thumbnail"),
+                                    description = reader.GetValueOrDefault<string>("Description")
+                                });
+                            }
                         }
                     }
                 }
+                    
             }
             catch (Exception ex)
             {
