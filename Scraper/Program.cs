@@ -20,7 +20,7 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
-            List<ProtoRecipeResponse> protoRecipes = new List<ProtoRecipeResponse>();
+            List<ProtoRecipe> protoRecipes = new List<ProtoRecipe>();
             var res = GetProtoRecipes(1);
             int pageCount = 1;
             if (res.IsSuccessful)
@@ -31,7 +31,7 @@ namespace Scraper
                     var response = GetProtoRecipes(i);
                     if (response.IsSuccessful)
                     {
-                        foreach (ProtoRecipeResponse protoRecipe in response.Data)
+                        foreach (ProtoRecipe protoRecipe in response.Data)
                         {
                             protoRecipes.Add(protoRecipe);
                         }
@@ -284,12 +284,12 @@ namespace Scraper
             return recipes;
         }
 
-        public static IRestResponse<List<ProtoRecipeResponse>> GetProtoRecipes(int page)
+        public static IRestResponse<List<ProtoRecipe>> GetProtoRecipes(int page)
         {
             string url = string.Format("{0}?page={1}", ConfigurationManager.AppSettings["APIURL2"], page);
             var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
-            return client.Execute<List<ProtoRecipeResponse>>(request);
+            return client.Execute<List<ProtoRecipe>>(request);
         }
             
         public static List<Ingredient> GetHardCodedIngredients()

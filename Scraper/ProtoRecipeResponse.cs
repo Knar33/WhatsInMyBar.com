@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 
 namespace Scraper
 {
-    public class ProtoRecipeResponse
-    {
-        public List<ProtoRecipe> Property1 { get; set; }
-    }
-
     public class ProtoRecipe
     {
         public int id { get; set; }
