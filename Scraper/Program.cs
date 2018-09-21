@@ -142,6 +142,30 @@ namespace Scraper
         public static List<Recipe> GetRecipesFromDatabase()
         {
             List<Recipe> recipes = new List<Recipe>();
+
+            DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString);
+            dbConnection.Open();
+            using (var cmd = dbConnection.CreateCommand())
+            {
+                cmd.CommandText = "GetAllRecipes";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        recipes.Add(new Recipe
+                        {
+                            ingredient_id = reader.GetValueOrDefault<int>("ShipmentID"),
+                            name = reader.GetValueOrDefault<string>("DateCreated"),
+                            IsNew = false,
+                            Scraped = false
+                        });
+                    }
+                }
+            }
+
             return recipes;
         }
 
