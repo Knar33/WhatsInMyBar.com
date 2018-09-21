@@ -39,9 +39,17 @@ namespace Scraper
                 }
             }
 
-            Console.ReadLine();
-
             List<Recipe> recipes = GetRecipesFromDatabase();
+            foreach (ProtoRecipe protoRecipe in protoRecipes)
+            {
+                if (!recipes.Any(x => x.id == protoRecipe.id))
+                {
+                    Console.WriteLine(protoRecipe.title.rendered);
+                }
+            }
+
+           Console.ReadLine();
+
             List<Ingredient> ingredients = GetIngredientsFromDatabase();
             if (ingredients.Count() == 0)
             {
