@@ -53,7 +53,7 @@ namespace Scraper
                                         if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id) && !newIngredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
                                         {
                                             newIngredients.Add(newIngredient);
-                                            InsertIngredient(newIngredient, recipe.id);
+                                            InsertIngredient(newIngredient);
                                         }
                                         InsertRecipeIngredient(newIngredient, recipe.id);
                                     }
@@ -128,7 +128,7 @@ namespace Scraper
             }
         }
 
-        public static void InsertIngredient(Ingredient ingredient, int RecipeID)
+        public static void InsertIngredient(Ingredient ingredient)
         {
             try
             {
@@ -141,7 +141,6 @@ namespace Scraper
                     cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
 
                     cmd.AddParameter("@IngredientID", ingredient.ingredient_id);
-                    cmd.AddParameter("@RecipeID", RecipeID);
                     cmd.AddParameter("@Name", ingredient.name);
 
                     cmd.ExecuteNonQuery();
