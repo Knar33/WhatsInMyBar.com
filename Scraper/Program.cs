@@ -20,6 +20,7 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("================================================ missing recipes ================================================ ");
             List<ProtoRecipe> protoRecipes = new List<ProtoRecipe>();
             var res = GetProtoRecipes(1);
             int pageCount = 1;
@@ -44,11 +45,11 @@ namespace Scraper
             {
                 if (!recipes.Any(x => x.id == protoRecipe.id))
                 {
-                    Console.WriteLine(protoRecipe.title.rendered);
+                    Console.WriteLine(string.Format("{0} - {1}", protoRecipe.title.rendered, protoRecipe.id));
                 }
             }
-
-           Console.ReadLine();
+            Console.WriteLine("================================================  End of missing recipes ================================================ ");
+            Console.ReadLine();
 
             List<Ingredient> ingredients = GetIngredientsFromDatabase();
             if (ingredients.Count() == 0)
