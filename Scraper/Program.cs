@@ -175,7 +175,7 @@ namespace Scraper
                                 ingredient_id = reader.GetValueOrDefault<int>("IngredientID"),
                                 Category = reader.GetValueOrDefault<int>("CategoryID"),
                                 name = reader.GetValueOrDefault<string>("Name"),
-                                Scraped = true
+                                Scraped = false
                             });
                         }
                     }
