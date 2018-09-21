@@ -170,7 +170,7 @@ namespace Scraper
                         cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
 
                         cmd.AddParameter("@IngredientID", ingredient.ingredient_id);
-                        cmd.AddParameter("@Name", ingredient.name);
+                        cmd.AddParameter("@RecipeID", RecipeID);
 
                         cmd.ExecuteNonQuery();
                     }
