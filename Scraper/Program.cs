@@ -175,7 +175,7 @@ namespace Scraper
                                 Category = reader.GetValueOrDefault<int>("CategoryID"),
                                 name = reader.GetValueOrDefault<string>("Name"),
                                 IsNew = false,
-                                Scraped = false
+                                Scraped = true
                             });
                         }
                     }
