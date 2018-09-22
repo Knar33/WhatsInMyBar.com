@@ -50,69 +50,77 @@ namespace Scraper
             }
 
             Console.WriteLine("================================================ missing recipes ================================================ ");
+            int recipesMissing = 0;
             foreach (ProtoRecipe recipe in missingRecipes)
             {
                 var response = GetSpecifitRecipe(recipe.id);
                 if (response.IsSuccessful)
                 {
+                    recipesMissing++;
                     Console.WriteLine(string.Format("{0} - {1}", response.Data.title.rendered, response.Data.id));
                 }
             }
             Console.WriteLine("================================================  End of missing recipes ================================================ ");
-            Console.ReadLine();
 
-            List<Ingredient> ingredients = GetIngredientsFromDatabase();
-            if (ingredients.Count() == 0)
+            if (recipesMissing > 0)
             {
-                ingredients = GetHardCodedIngredients();
-            }
-
-            bool ingredientsLeft = true;
-            while (ingredientsLeft)
-            {
-                List<Ingredient> newIngredients = new List<Ingredient>();
-                foreach (Ingredient ingredient in ingredients.Where(x => !x.Scraped))
+                List<Ingredient> ingredients = GetIngredientsFromDatabase();
+                if (ingredients.Count() == 0)
                 {
-                    Console.WriteLine(ingredient.name);
-                    GetRecipesResponse response = (new GetRecipesRequest(ingredient.name, 1)).Send();
+                    ingredients = GetHardCodedIngredients();
+                }
 
-                    decimal pages = Math.Ceiling(response.count / 24m);
-                    for (int i = 1; i <= pages; i++)
+                bool ingredientsLeft = true;
+                while (ingredientsLeft)
+                {
+                    List<Ingredient> newIngredients = new List<Ingredient>();
+                    foreach (Ingredient ingredient in ingredients.Where(x => !x.Scraped))
                     {
-                        GetRecipesResponse innerResponse = (new GetRecipesRequest(ingredient.name, i)).Send();
-                        if (innerResponse.recipes?.Count() > 0)
+                        Console.WriteLine(ingredient.name);
+                        GetRecipesResponse response = (new GetRecipesRequest(ingredient.name, 1)).Send();
+
+                        decimal pages = Math.Ceiling(response.count / 24m);
+                        for (int i = 1; i <= pages; i++)
                         {
-                            foreach (Recipe recipe in innerResponse.recipes)
+                            GetRecipesResponse innerResponse = (new GetRecipesRequest(ingredient.name, i)).Send();
+                            if (innerResponse.recipes?.Count() > 0)
                             {
-                                if (!recipes.Any(x => x.id == recipe.id))
+                                foreach (Recipe recipe in innerResponse.recipes)
                                 {
-                                    recipes.Add(recipe);
-                                    InsertRecipe(recipe);
-                                    DownloadThumbnail(recipe);
-                                    foreach (Ingredient newIngredient in recipe.ingredients)
+                                    if (!recipes.Any(x => x.id == recipe.id))
                                     {
-                                        if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id) && !newIngredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
+                                        recipes.Add(recipe);
+                                        InsertRecipe(recipe);
+                                        DownloadThumbnail(recipe);
+                                        foreach (Ingredient newIngredient in recipe.ingredients)
                                         {
-                                            newIngredients.Add(newIngredient);
-                                            InsertIngredient(newIngredient);
+                                            if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id) && !newIngredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
+                                            {
+                                                newIngredients.Add(newIngredient);
+                                                InsertIngredient(newIngredient);
+                                            }
+                                            InsertRecipeIngredient(newIngredient, recipe.id);
                                         }
-                                        InsertRecipeIngredient(newIngredient, recipe.id);
                                     }
                                 }
                             }
                         }
+                        ingredient.Scraped = true;
                     }
-                    ingredient.Scraped = true;
-                }
 
-                foreach (Ingredient newIngredient in newIngredients)
-                {
-                    ingredients.Add(newIngredient);
+                    foreach (Ingredient newIngredient in newIngredients)
+                    {
+                        ingredients.Add(newIngredient);
+                    }
+
+                    ingredientsLeft = ingredients.Any(x => !x.Scraped);
                 }
-                
-                ingredientsLeft = ingredients.Any(x => !x.Scraped);
             }
-
+            else
+            {
+                Console.WriteLine("All Recipes are in the Database");
+            }
+            
             Console.ReadLine();
         }
 
