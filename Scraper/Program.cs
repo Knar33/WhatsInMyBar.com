@@ -20,6 +20,9 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
+            //This whole thing is way too procedural, should be broken out into methods to be cleaner
+            //It's just a quick and dirty scraper to get the job done
+
             List<ProtoRecipe> protoRecipes = new List<ProtoRecipe>();
             var res = GetProtoRecipes(1);
             int pageCount = 1;
