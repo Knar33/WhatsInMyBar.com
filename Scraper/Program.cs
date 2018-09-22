@@ -23,6 +23,8 @@ namespace Scraper
             //This whole thing is way too procedural, should be broken out into methods to be cleaner
             //It's just a quick and dirty scraper to get the job done
 
+            var response22 = GetSpecifitRecipe(197);
+
             List<ProtoRecipe> protoRecipes = new List<ProtoRecipe>();
             var res = GetProtoRecipes(1);
             int pageCount = 1;
@@ -57,7 +59,7 @@ namespace Scraper
             foreach (ProtoRecipe recipe in missingRecipes)
             {
                 var response = GetSpecifitRecipe(recipe.id);
-                if (response.IsSuccessful)
+                if (response.Data.ping_status == "open")
                 {
                     recipesMissing++;
                     Console.WriteLine(string.Format("{0} - {1}", response.Data.title.rendered, response.Data.id));

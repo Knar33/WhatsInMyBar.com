@@ -8,6 +8,11 @@ namespace Scraper
 {
     public class ProtoRecipe
     {
+        public ProtoRecipe()
+        {
+
+        }
+
         public int id { get; set; }
         public DateTime date { get; set; }
         public DateTime date_gmt { get; set; }
