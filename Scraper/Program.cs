@@ -76,6 +76,8 @@ namespace Scraper
                 }
 
                 bool ingredientsLeft = true;
+
+                //TODO: Keep track of the RecipesMissing, and once all of the missing recipes are scraped, end the process
                 while (ingredientsLeft)
                 {
                     List<Ingredient> newIngredients = new List<Ingredient>();
