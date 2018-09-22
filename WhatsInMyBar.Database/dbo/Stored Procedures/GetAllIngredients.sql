@@ -8,6 +8,6 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	Select IngredientID, CategoryID, Name, DateCreated from Ingredients
+	Select IngredientID, Name, DateCreated from Ingredients
 	
 END
