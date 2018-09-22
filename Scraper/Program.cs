@@ -50,7 +50,14 @@ namespace Scraper
             }
 
             Console.WriteLine("================================================ missing recipes ================================================ ");
-            //Console.WriteLine(string.Format("{0} - {1}", protoRecipe.title.rendered, protoRecipe.id));
+            foreach (ProtoRecipe recipe in missingRecipes)
+            {
+                var response = GetSpecifitRecipe(recipe.id);
+                if (response.IsSuccessful)
+                {
+                    Console.WriteLine(string.Format("{0} - {1}", response.Data.title.rendered, response.Data.id));
+                }
+            }
             Console.WriteLine("================================================  End of missing recipes ================================================ ");
             Console.ReadLine();
 
@@ -303,7 +310,15 @@ namespace Scraper
             var request = new RestRequest(Method.GET);
             return client.Execute<List<ProtoRecipe>>(request);
         }
-            
+
+        public static IRestResponse<SpecificRecipe> GetSpecifitRecipe(int recipeID)
+        {
+            string url = string.Format("{0}{1}", ConfigurationManager.AppSettings["APIURL3"], recipeID);
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.GET);
+            return client.Execute<SpecificRecipe>(request);
+        }
+
         public static List<Ingredient> GetHardCodedIngredients()
         {
             List<Ingredient> ingredients = new List<Ingredient>();
