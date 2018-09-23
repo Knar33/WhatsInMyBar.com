@@ -188,7 +188,7 @@
     </Compile>
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Ingredient.cs" />
-    <Compile Include="Models\IngredientCatrgory.cs" />
+    <Compile Include="Models\IngredientCategory.cs" />
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\RecipeIngredient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

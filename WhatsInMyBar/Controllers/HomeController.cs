@@ -17,16 +17,14 @@ namespace WhatsInMyBar.Controllers
         public List<Recipe> Recipes { get; set; }
         public List<Ingredient> Ingredients { get; set; }
         public List<Category> Categories { get; set; }
-        public List<RecipeIngredient> RecipeIngredients { get; set; }
-        public List<IngredientCategory> IngredientCategories { get; set; }
 
         public HomeController()
         {
             Recipes = new List<Recipe>();
             Ingredients = new List<Ingredient>();
             Categories = new List<Category>();
-            RecipeIngredients = new List<RecipeIngredient>();
-            IngredientCategories = new List<IngredientCategory>();
+            List<RecipeIngredient> RecipeIngredients = new List<RecipeIngredient>();
+            List<IngredientCategory> IngredientCategories = new List<IngredientCategory>();
 
             using (DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString))
             {
@@ -127,6 +125,26 @@ namespace WhatsInMyBar.Controllers
                             });
                         }
                     }
+                }
+            }
+
+            foreach (Recipe recipe in Recipes)
+            {
+                recipe.Ingredients = new List<Ingredient>();
+                List<RecipeIngredient> recipeIngredients = RecipeIngredients.Where(x => x.RecipeID == recipe.RecipeID).ToList();
+                foreach (RecipeIngredient recipeIngredient in recipeIngredients)
+                {
+                    recipe.Ingredients.Add(Ingredients.FirstOrDefault(x => x.IngredientID == recipeIngredient.IngredientID));
+                }
+            }
+
+            foreach (Ingredient ingredient in Ingredients)
+            {
+                ingredient.Categories = new List<Category>();
+                List<IngredientCategory> ingredientCategories = IngredientCategories.Where(x => x.IngredientID == ingredient.IngredientID).ToList();
+                foreach (IngredientCategory ingredientCategory in ingredientCategories)
+                {
+                    ingredient.Categories.Add(Categories.FirstOrDefault(x => x.CategoryID == ingredientCategory.CategoryID));
                 }
             }
         }
