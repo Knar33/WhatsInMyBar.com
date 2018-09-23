@@ -7,5 +7,8 @@ namespace WhatsInMyBar.Models
 {
     public class IngredientCatrgory
     {
+        public int IngredientID { get; set; }
+        public int CategoryID { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
     }
 }
