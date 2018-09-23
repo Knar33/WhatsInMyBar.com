@@ -23,8 +23,8 @@ namespace WhatsInMyBar
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/CSS/Content/bootstrap.css",
-                      "~/CSS/Content/site.css"));
+                      "~/Content/CSS/bootstrap.css",
+                      "~/Content/CSS/site.css"));
         }
     }
 }
