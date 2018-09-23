@@ -328,7 +328,7 @@ namespace Scraper
 
         public static IRestResponse<SpecificRecipe> GetSpecifitRecipe(int recipeID)
         {
-            string url = string.Format("{0}{1}", ConfigurationManager.AppSettings["APIURL3"], recipeID);
+            string url = string.Format("{0}/{1}", ConfigurationManager.AppSettings["APIURL2"], recipeID);
             var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
             return client.Execute<SpecificRecipe>(request);
