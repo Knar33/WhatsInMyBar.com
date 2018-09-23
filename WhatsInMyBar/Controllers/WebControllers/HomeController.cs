@@ -10,7 +10,7 @@ using System.Web.Mvc;
 using WhatsInMyBar.Extensions;
 using WhatsInMyBar.Models;
 
-namespace WhatsInMyBar.Controllers
+namespace WhatsInMyBar.Controllers.WebControllers
 {
     public class HomeController : Controller
     {
