@@ -77,5 +77,6 @@
     <Build Include="dbo\Stored Procedures\CreateRecipeIngredients.sql" />
     <Build Include="dbo\Tables\IngredientCategories.sql" />
     <Build Include="dbo\Stored Procedures\GetAllIngredientCategories.sql" />
+    <Build Include="dbo\Stored Procedures\GetAllRecipeIngredients.sql" />
   </ItemGroup>
 </Project>
