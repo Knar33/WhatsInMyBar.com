@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WhatsInMyBar.Models
 {
-    public class IngredientCatrgory
+    public class IngredientCategory
     {
         public int IngredientID { get; set; }
         public int CategoryID { get; set; }
