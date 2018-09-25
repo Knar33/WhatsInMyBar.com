@@ -20,6 +20,11 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
+            ScrapRecipes();
+        }
+
+        public static void ScrapRecipes()
+        {
             //This whole thing is way too procedural, should be broken out into methods to be cleaner
             //It's just a quick and dirty scraper to get the job done
 
@@ -127,7 +132,7 @@ namespace Scraper
             {
                 Console.WriteLine("All Recipes are in the Database");
             }
-            
+
             Console.ReadLine();
         }
 
