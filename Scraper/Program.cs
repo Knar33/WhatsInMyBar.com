@@ -160,7 +160,7 @@ namespace Scraper
 
             foreach (KeyValuePair<string, int> category in categories.OrderByDescending(x => x.Value))
             {
-                Console.WriteLine("{0}      {1}", category.Key, category.Value);
+                Console.WriteLine("{0},{1}", category.Key.Replace(",", ""), category.Value);
             }
         }
 
