@@ -154,10 +154,6 @@ namespace Scraper
                         foreach (string match in matchingKeys)
                         {
                             categories[match]++;
-                            if (match == "Grand")
-                            {
-                                Console.WriteLine(word);
-                            }
                         }
                     }
                     else
