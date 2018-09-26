@@ -20,7 +20,8 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
-            ScrapRecipes();
+            //ScrapRecipes();
+            CategorizeIngredients();
         }
 
         public static void ScrapRecipes()
@@ -134,6 +135,33 @@ namespace Scraper
             }
 
             Console.ReadLine();
+        }
+
+        public static void CategorizeIngredients()
+        {
+            List<Ingredient> ingredients = GetIngredientsFromDatabase();
+            Dictionary<string, int> categories = new Dictionary<string, int>();
+
+            foreach (Ingredient ingredient in ingredients)
+            {
+                string[] words = ingredient.name.Split(' ').GroupBy(x => x).Select(x => x.First()).ToArray();
+                foreach (string word in words)
+                {
+                    if (categories.Any(x => x.Key == word))
+                    {
+                        categories[word]++;
+                    }
+                    else
+                    {
+                        categories.Add(word, 1);
+                    }
+                }
+            }
+
+            foreach (KeyValuePair<string, int> category in categories.OrderByDescending(x => x.Value))
+            {
+                Console.WriteLine("{0}      {1}", category.Key, category.Value);
+            }
         }
 
         public static void DownloadThumbnail(Recipe recipe)
@@ -265,7 +293,6 @@ namespace Scraper
                                 ingredients.Add(new Ingredient
                                 {
                                     ingredient_id = reader.GetValueOrDefault<int>("IngredientID"),
-                                    Category = reader.GetValueOrDefault<int>("CategoryID"),
                                     name = reader.GetValueOrDefault<string>("Name"),
                                     Scraped = false
                                 });
