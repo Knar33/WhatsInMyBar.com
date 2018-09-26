@@ -20,11 +20,11 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
-            //ScrapRecipes();
+            //ScrapeRecipes();
             CategorizeIngredients();
         }
 
-        public static void ScrapRecipes()
+        public static void ScrapeRecipes()
         {
             //This whole thing is way too procedural, should be broken out into methods to be cleaner
             //It's just a quick and dirty scraper to get the job done
