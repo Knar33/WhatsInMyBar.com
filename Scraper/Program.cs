@@ -150,7 +150,7 @@ namespace Scraper
                 string[] words = ingredient.name.Replace('-', ' ').Split(' ').Where(x => x.Length > 2).GroupBy(x => x).Select(x => x.First()).Where(x => !bannedWords.Contains(x.ToLower())).ToArray();
                 foreach (string word in words)
                 {
-                    List<string> matchingKeys = categories.Where(x => alphaNumeric.Replace(x.Key, "").ToLower() == alphaNumeric.Replace(word, "").ToLower()).Select(x => x.Key).ToList();
+                    List<string> matchingKeys = categories.Where(x => x.Key == alphaNumeric.Replace(word, "").ToLower()).Select(x => x.Key).ToList();
                     if (matchingKeys.Count() > 0)
                     {
                         foreach (string match in matchingKeys)
@@ -160,7 +160,7 @@ namespace Scraper
                     }
                     else
                     {
-                        categories.Add(word, 1);
+                        categories.Add(alphaNumeric.Replace(word, "").ToLower(), 1);
                     }
                 }
             }
