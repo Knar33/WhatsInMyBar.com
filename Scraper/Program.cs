@@ -144,7 +144,7 @@ namespace Scraper
 
             foreach (Ingredient ingredient in ingredients)
             {
-                string[] words = ingredient.name.Split(' ').GroupBy(x => x).Select(x => x.First()).ToArray();
+                string[] words = ingredient.name.Split(' ').Where(x => x.Length > 2).GroupBy(x => x).Select(x => x.First()).ToArray();
                 foreach (string word in words)
                 {
                     var matchingKeys = categories.Where(x => x.Key.Contains(word) || x.Key.ToLower().Contains(word) || x.Key.ToUpper().Contains(word) || (char.ToUpper(x.Key[0]) + x.Key.Substring(1)).Contains(word)).Select(x => x.Key).ToList();
