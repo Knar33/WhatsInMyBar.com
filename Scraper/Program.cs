@@ -147,7 +147,7 @@ namespace Scraper
                 string[] words = ingredient.name.Split(' ').Where(x => x.Length > 2).GroupBy(x => x).Select(x => x.First()).ToArray();
                 foreach (string word in words)
                 {
-                    var matchingKeys = categories.Where(x => x.Key.Contains(word) || word.Contains(x.Key) || x.Key.ToLower().Contains(word.ToLower()) || word.ToLower().Contains(x.Key.ToLower())).Select(x => x.Key).ToList();
+                    var matchingKeys = categories.Where(x.Key.ToLower().Contains(word.ToLower()) || word.ToLower().Contains(x.Key.ToLower())).Select(x => x.Key).ToList();
                     if (matchingKeys.Count() > 0)
                     {
                         foreach (var match in matchingKeys)
