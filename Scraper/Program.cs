@@ -144,15 +144,20 @@ namespace Scraper
 
             foreach (Ingredient ingredient in ingredients)
             {
-                string[] words = ingredient.name.Split(' ').Where(x => x.Length > 2).GroupBy(x => x).Select(x => x.First()).ToArray();
+                string[] bannedWords = new string[] { "and", "for", "the", "into", "cut", "with", "one" };
+                string[] words = ingredient.name.Split(' ').Where(x => x.Length > 2).GroupBy(x => x).Select(x => x.First()).Where(x => !bannedWords.Contains(x.ToLower())).ToArray();
                 foreach (string word in words)
                 {
-                    var matchingKeys = categories.Where(x.Key.ToLower().Contains(word.ToLower()) || word.ToLower().Contains(x.Key.ToLower())).Select(x => x.Key).ToList();
+                    List<string> matchingKeys = categories.Where(x => x.Key.ToLower().Contains(word.ToLower()) || word.ToLower().Contains(x.Key.ToLower())).Select(x => x.Key).ToList();
                     if (matchingKeys.Count() > 0)
                     {
-                        foreach (var match in matchingKeys)
+                        foreach (string match in matchingKeys)
                         {
                             categories[match]++;
+                            if (match == "Grand")
+                            {
+                                Console.WriteLine(word);
+                            }
                         }
                     }
                     else
