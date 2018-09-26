@@ -13,6 +13,7 @@ using System.Data.SqlClient;
 using System.Data;
 using WhatsInMyBar.Extensions;
 using RestSharp;
+using System.Text.RegularExpressions;
 
 namespace Scraper
 {
@@ -139,16 +140,17 @@ namespace Scraper
 
         public static void CategorizeIngredients()
         {
+            Regex alphaNumeric = new Regex("[^a-zA-Z0-9]");
             List<Ingredient> ingredients = GetIngredientsFromDatabase();
             Dictionary<string, int> categories = new Dictionary<string, int>();
 
             foreach (Ingredient ingredient in ingredients)
             {
                 string[] bannedWords = new string[] { "and", "for", "the", "into", "cut", "with", "one" };
-                string[] words = ingredient.name.Split(' ').Where(x => x.Length > 2).GroupBy(x => x).Select(x => x.First()).Where(x => !bannedWords.Contains(x.ToLower())).ToArray();
+                string[] words = ingredient.name.Replace('-', ' ').Split(' ').Where(x => x.Length > 2).GroupBy(x => x).Select(x => x.First()).Where(x => !bannedWords.Contains(x.ToLower())).ToArray();
                 foreach (string word in words)
                 {
-                    List<string> matchingKeys = categories.Where(x => x.Key.ToLower().Contains(word.ToLower()) || word.ToLower().Contains(x.Key.ToLower())).Select(x => x.Key).ToList();
+                    List<string> matchingKeys = categories.Where(x => alphaNumeric.Replace(x.Key, "").ToLower() == alphaNumeric.Replace(word, "").ToLower()).Select(x => x.Key).ToList();
                     if (matchingKeys.Count() > 0)
                     {
                         foreach (string match in matchingKeys)
