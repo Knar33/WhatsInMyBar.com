@@ -113,7 +113,7 @@ namespace Scraper
                                                 newIngredients.Add(newIngredient);
                                                 newIngredient.Insert();
                                             }
-                                            InsertRecipeIngredient(newIngredient, recipe.id);
+                                            ingredient.InsertRecipeIngredient(recipe.id);
                                         }
                                     }
                                 }
@@ -172,34 +172,6 @@ namespace Scraper
         }
 
 
-        
-
-
-        public static void InsertRecipeIngredient(Ingredient ingredient, int RecipeID)
-        {
-            try
-            {
-                using (DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString))
-                {
-                    dbConnection.Open();
-                    using (var cmd = dbConnection.CreateCommand())
-                    {
-                        cmd.CommandText = "CreateRecipeIngredients";
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
-
-                        cmd.AddParameter("@IngredientID", ingredient.ingredient_id);
-                        cmd.AddParameter("@RecipeID", RecipeID);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
 
         public static List<Ingredient> GetIngredientsFromDatabase()
         {

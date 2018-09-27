@@ -55,5 +55,31 @@ namespace Scraper
                 Console.WriteLine(ex.Message);
             }
         }
+
+        public void InsertRecipeIngredient(int RecipeID)
+        {
+            try
+            {
+                using (DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString))
+                {
+                    dbConnection.Open();
+                    using (var cmd = dbConnection.CreateCommand())
+                    {
+                        cmd.CommandText = "CreateRecipeIngredients";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
+
+                        cmd.AddParameter("@IngredientID", ingredient_id);
+                        cmd.AddParameter("@RecipeID", RecipeID);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }
