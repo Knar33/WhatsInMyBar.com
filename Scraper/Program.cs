@@ -104,7 +104,7 @@ namespace Scraper
                                     if (!recipes.Any(x => x.id == recipe.id))
                                     {
                                         recipes.Add(recipe);
-                                        InsertRecipe(recipe);
+                                        recipe.Insert();
                                         DownloadThumbnail(recipe);
                                         foreach (Ingredient newIngredient in recipe.ingredients)
                                         {
@@ -196,36 +196,7 @@ namespace Scraper
                 Console.WriteLine(ex.Message);
             }
         }
-
-        public static void InsertRecipe(Recipe recipe)
-        {
-            try
-            {
-                using (DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString))
-                {
-                    dbConnection.Open();
-                    using (var cmd = dbConnection.CreateCommand())
-                    {
-                        cmd.CommandText = "CreateRecipes";
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
-
-                        cmd.AddParameter("@RecipeID", recipe.id);
-                        cmd.AddParameter("@Name", recipe.title.rendered);
-                        cmd.AddParameter("@Link", recipe.link);
-                        cmd.AddParameter("@Thumbnail", recipe.thumbnail);
-                        cmd.AddParameter("@Description", recipe.description);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
+        
         public static void InsertIngredient(Ingredient ingredient)
         {
             try
