@@ -5,6 +5,10 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data;
 using WhatsInMyBar.Extensions;
+using System.Net;
+using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Scraper
 {
@@ -40,6 +44,32 @@ namespace Scraper
 
                         cmd.ExecuteNonQuery();
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public void DownloadThumbnail()
+        {
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    string thumbnailURI = string.Format("http://{0}", thumbnail.TrimStart('/'));
+                    byte[] data = webClient.DownloadData(thumbnailURI);
+
+                    using (MemoryStream mem = new MemoryStream(data))
+                    {
+                        using (var yourImage = Image.FromStream(mem))
+                        {
+                            string imageURL = string.Format("{0}{1}.jpg", ConfigurationManager.AppSettings["LocalImagePath"], id);
+                            yourImage.Save(imageURL, ImageFormat.Jpeg);
+                        }
+                    }
+
                 }
             }
             catch (Exception ex)
