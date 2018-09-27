@@ -76,7 +76,7 @@ namespace Scraper
 
             if (recipesMissing > 0)
             {
-                List<Ingredient> ingredients = GetIngredientsFromDatabase();
+                List<Ingredient> ingredients = Ingredient.GetIngredientsFromDatabase();
                 if (ingredients.Count() == 0)
                 {
                     ingredients = GetHardCodedIngredients();
@@ -141,7 +141,7 @@ namespace Scraper
         public static void CategorizeIngredients()
         {
             Regex alphaNumeric = new Regex("[^a-zA-Z0-9]");
-            List<Ingredient> ingredients = GetIngredientsFromDatabase();
+            List<Ingredient> ingredients = Ingredient.GetIngredientsFromDatabase();
             Dictionary<string, int> categories = new Dictionary<string, int>();
 
             foreach (Ingredient ingredient in ingredients)
@@ -170,49 +170,7 @@ namespace Scraper
                 Console.WriteLine("{0},{1}", category.Key.Replace(",", ""), category.Value);
             }
         }
-
-
-
-        public static List<Ingredient> GetIngredientsFromDatabase()
-        {
-            List<Ingredient> ingredients = new List<Ingredient>();
-
-            try
-            {
-                using (DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString))
-                {
-                    dbConnection.Open();
-                    using (var cmd = dbConnection.CreateCommand())
-                    {
-                        cmd.CommandText = "GetAllIngredients";
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                ingredients.Add(new Ingredient
-                                {
-                                    ingredient_id = reader.GetValueOrDefault<int>("IngredientID"),
-                                    name = reader.GetValueOrDefault<string>("Name"),
-                                    Scraped = false
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            return ingredients;
-        }
-
-
-
+        
         public static IRestResponse<List<ProtoRecipe>> GetProtoRecipes(int page)
         {
             string url = string.Format("{0}?page={1}", ConfigurationManager.AppSettings["APIURL2"], page);
