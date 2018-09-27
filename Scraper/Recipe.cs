@@ -77,5 +77,46 @@ namespace Scraper
                 Console.WriteLine(ex.Message);
             }
         }
+
+        public static List<Recipe> GetRecipesFromDatabase()
+        {
+            List<Recipe> recipes = new List<Recipe>();
+
+            try
+            {
+                using (DbConnection dbConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Database"].ConnectionString))
+                {
+                    dbConnection.Open();
+                    using (var cmd = dbConnection.CreateCommand())
+                    {
+                        cmd.CommandText = "GetAllRecipes";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = Int32.Parse(ConfigurationManager.AppSettings["SQLTimeout"]);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                recipes.Add(new Recipe
+                                {
+                                    id = reader.GetValueOrDefault<int>("RecipeID"),
+                                    title = new Title { rendered = reader.GetValueOrDefault<string>("Name") },
+                                    link = reader.GetValueOrDefault<string>("Link"),
+                                    thumbnail = reader.GetValueOrDefault<string>("Thumbnail"),
+                                    description = reader.GetValueOrDefault<string>("Description")
+                                });
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return recipes;
+        }
     }
 }
