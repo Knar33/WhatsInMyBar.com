@@ -105,7 +105,7 @@ namespace Scraper
                                     {
                                         recipes.Add(recipe);
                                         recipe.Insert();
-                                        DownloadThumbnail(recipe);
+                                        recipe.DownloadThumbnail();
                                         foreach (Ingredient newIngredient in recipe.ingredients)
                                         {
                                             if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id) && !newIngredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
@@ -171,31 +171,7 @@ namespace Scraper
             }
         }
 
-        public static void DownloadThumbnail(Recipe recipe)
-        {
-            try
-            {
-                using (WebClient webClient = new WebClient())
-                {
-                    string thumbnailURI = string.Format("http://{0}", recipe.thumbnail.TrimStart('/'));
-                    byte[] data = webClient.DownloadData(thumbnailURI);
 
-                    using (MemoryStream mem = new MemoryStream(data))
-                    {
-                        using (var yourImage = Image.FromStream(mem))
-                        {
-                            string imageURL = string.Format("{0}{1}.jpg", ConfigurationManager.AppSettings["LocalImagePath"], recipe.id);
-                            yourImage.Save(imageURL, ImageFormat.Jpeg);
-                        }
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
         
         public static void InsertIngredient(Ingredient ingredient)
         {
