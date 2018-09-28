@@ -146,10 +146,17 @@ namespace Scraper
 
             foreach (Ingredient ingredient in ingredients)
             {
-                string[] words = ingredient.name.Replace('-', ' ').Split(' ').Where(x => x.Length > 2).Select(x => x.StripDiacritics()).GroupBy(x => x).Select(x => x.First()).ToArray();
-                foreach (string word in words)
+                string[] words = ingredient.name
+                    .Replace('-', ' ')
+                    .Split(' ')
+                    .Where(x => x.Length > 2)
+                    .Select(x => alphaNumeric.Replace(x, "").ToLower().StripDiacritics())
+                    .GroupBy(x => x)
+                    .Select(x => x.First())
+                    .ToArray();
+                foreach (string word in words) 
                 {
-                    List<string> matchingKeys = categories.Where(x => x.Key == alphaNumeric.Replace(word, "").ToLower()).Select(x => x.Key).ToList();
+                    List<string> matchingKeys = categories.Where(x => x.Key == word).Select(x => x.Key).ToList();
                     if (matchingKeys.Count() > 0)
                     {
                         foreach (string match in matchingKeys)
@@ -159,7 +166,7 @@ namespace Scraper
                     }
                     else
                     {
-                        categories.Add(alphaNumeric.Replace(word, "").ToLower(), 1);
+                        categories.Add(word, 1);
                     }
                 }
             }
