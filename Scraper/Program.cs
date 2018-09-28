@@ -147,7 +147,7 @@ namespace Scraper
             foreach (Ingredient ingredient in ingredients)
             {
                 string[] bannedWords = new string[] { "and", "for", "the", "into", "cut", "with", "one" };
-                string[] words = ingredient.name.Replace('-', ' ').Split(' ').Where(x => x.Length > 2).GroupBy(x => x).Select(x => x.First()).Where(x => !bannedWords.Contains(x.ToLower())).ToArray();
+                string[] words = ingredient.name.Replace('-', ' ').Split(' ').Where(x => x.Length > 2).Select(x => x.StripDiacritics()).GroupBy(x => x).Select(x => x.First()).Where(x => !bannedWords.Contains(x.ToLower())).ToArray();
                 foreach (string word in words)
                 {
                     List<string> matchingKeys = categories.Where(x => x.Key == alphaNumeric.Replace(word, "").ToLower()).Select(x => x.Key).ToList();
@@ -170,7 +170,7 @@ namespace Scraper
                 Console.WriteLine("{0},{1}", category.Key.Replace(",", ""), category.Value);
             }
         }
-        
+
         public static IRestResponse<List<ProtoRecipe>> GetProtoRecipes(int page)
         {
             string url = string.Format("{0}?page={1}", ConfigurationManager.AppSettings["APIURL2"], page);
