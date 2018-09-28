@@ -27,9 +27,6 @@ namespace Scraper
 
         public static void ScrapeRecipes()
         {
-            //This whole thing is way too procedural, should be broken out into methods to be cleaner
-            //It's just a quick and dirty scraper to get the job done
-
             var response22 = GetSpecifitRecipe(197);
 
             List<ProtoRecipe> protoRecipes = new List<ProtoRecipe>();
@@ -83,8 +80,7 @@ namespace Scraper
                 }
 
                 bool ingredientsLeft = true;
-
-                //TODO: Keep track of the RecipesMissing, and once all of the missing recipes are scraped, end the process
+                
                 while (ingredientsLeft)
                 {
                     List<Ingredient> newIngredients = new List<Ingredient>();
@@ -146,14 +142,7 @@ namespace Scraper
 
             foreach (Ingredient ingredient in ingredients)
             {
-                string[] words = ingredient.name
-                    .Replace('-', ' ')
-                    .Split(' ')
-                    .Where(x => x.Length > 2)
-                    .Select(x => alphaNumeric.Replace(x, "").ToLower().StripDiacritics())
-                    .GroupBy(x => x)
-                    .Select(x => x.First())
-                    .ToArray();
+                string[] words = ingredient.name.Replace('-', ' ').Split(' ').Where(x => x.Length > 2).Select(x => alphaNumeric.Replace(x, "").ToLower().StripDiacritics()).GroupBy(x => x).Select(x => x.First()).ToArray();
                 foreach (string word in words) 
                 {
                     List<string> matchingKeys = categories.Where(x => x.Key == word).Select(x => x.Key).ToList();
