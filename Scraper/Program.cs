@@ -27,8 +27,6 @@ namespace Scraper
 
         public static void ScrapeRecipes()
         {
-            var response22 = GetSpecifitRecipe(197);
-
             List<ProtoRecipe> protoRecipes = new List<ProtoRecipe>();
             var res = GetProtoRecipes(1);
             int pageCount = 1;
@@ -62,7 +60,7 @@ namespace Scraper
             int recipesMissing = 0;
             foreach (ProtoRecipe recipe in missingRecipes)
             {
-                var response = GetSpecifitRecipe(recipe.id);
+                var response = GetSpecificRecipe(recipe.id);
                 if (response.Data.ping_status == "open")
                 {
                     recipesMissing++;
@@ -174,7 +172,7 @@ namespace Scraper
             return client.Execute<List<ProtoRecipe>>(request);
         }
 
-        public static IRestResponse<SpecificRecipe> GetSpecifitRecipe(int recipeID)
+        public static IRestResponse<SpecificRecipe> GetSpecificRecipe(int recipeID)
         {
             string url = string.Format("{0}/{1}", ConfigurationManager.AppSettings["APIURL2"], recipeID);
             var client = new RestClient(url);
