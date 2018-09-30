@@ -69,14 +69,14 @@ namespace Scraper
                     Console.WriteLine(string.Format("{0} - {1}", response.Data.title.rendered, response.Data.id));
                 }
             }
-            Console.WriteLine("================================================  End of missing recipes ================================================ ");
+            Console.WriteLine("================================================ End of missing recipes ================================================ ");
 
             if (recipesMissing > 0)
             {
                 List<Ingredient> ingredients = Ingredient.GetIngredientsFromDatabase();
                 if (ingredients.Count() == 0)
                 {
-                    ingredients = GetHardCodedIngredients();
+                    ingredients = Ingredient.GetHardCodedIngredients();
                 }
 
                 bool ingredientsLeft = true;
@@ -180,54 +180,6 @@ namespace Scraper
             var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
             return client.Execute<SpecificRecipe>(request);
-        }
-
-        public static List<Ingredient> GetHardCodedIngredients()
-        {
-            List<Ingredient> ingredients = new List<Ingredient>();
-
-            ingredients.Add(new Ingredient(10772, "Absinthe"));
-            ingredients.Add(new Ingredient(1860, "Brandy"));
-            ingredients.Add(new Ingredient(6630, "Cointreau"));
-            ingredients.Add(new Ingredient(59, "Grand Marnier"));
-            ingredients.Add(new Ingredient(10060, "Orange juice"));
-            ingredients.Add(new Ingredient(227, "St-Germain "));
-            ingredients.Add(new Ingredient(2043, "Agave nectar"));
-            ingredients.Add(new Ingredient(463, "Campari"));
-            ingredients.Add(new Ingredient(1888, "Cranberry juice"));
-            ingredients.Add(new Ingredient(1922, "Grapefruit juice"));
-            ingredients.Add(new Ingredient(2010, "Pineapple juice"));
-            ingredients.Add(new Ingredient(1872, "Sweet vermouth"));
-            ingredients.Add(new Ingredient(2198, "Aperol"));
-            ingredients.Add(new Ingredient(1910, "Champagne"));
-            ingredients.Add(new Ingredient(10307, "Dry vermouth"));
-            ingredients.Add(new Ingredient(2049, "Green Chartreuse"));
-            ingredients.Add(new Ingredient(7433, "Pisco"));
-            ingredients.Add(new Ingredient(10276, "Tequila"));
-            ingredients.Add(new Ingredient(268, "Bénédictine"));
-            ingredients.Add(new Ingredient(1947, "Club soda"));
-            ingredients.Add(new Ingredient(1867, "Egg white"));
-            ingredients.Add(new Ingredient(468, "Grenadine"));
-            ingredients.Add(new Ingredient(10516, "Rum"));
-            ingredients.Add(new Ingredient(1892, "Triple sec"));
-            ingredients.Add(new Ingredient(1937, "Coffee liqueur "));
-            ingredients.Add(new Ingredient(10096, "Gin"));
-            ingredients.Add(new Ingredient(1865, "Lemon juice"));
-            ingredients.Add(new Ingredient(10334, "Scotch"));
-            ingredients.Add(new Ingredient(1966, "Vodka"));
-            ingredients.Add(new Ingredient(6568, "Bourbon"));
-            ingredients.Add(new Ingredient(696, "Cognac"));
-            ingredients.Add(new Ingredient(1915, "Ginger beer"));
-            ingredients.Add(new Ingredient(1893, "Lime juice"));
-            ingredients.Add(new Ingredient(19, "Simple syrup"));
-            ingredients.Add(new Ingredient(1935, "Rye whiskey"));
-
-            foreach (Ingredient ingredient in ingredients)
-            {
-                ingredient.Insert();
-            }
-
-            return ingredients;
         }
     }
 }
