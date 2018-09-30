@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Scraper
 {
-    public class ProtoRecipe
+    public class PagedRecipe
     {
-        public ProtoRecipe()
+        public PagedRecipe()
         {
 
         }
