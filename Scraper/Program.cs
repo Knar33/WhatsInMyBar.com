@@ -27,38 +27,38 @@ namespace Scraper
 
         public static void ScrapeRecipes()
         {
-            List<ProtoRecipe> protoRecipes = new List<ProtoRecipe>();
-            var res = GetProtoRecipes(1);
+            List<PagedRecipe> pagedRecipes = new List<PagedRecipe>();
+            var res = GetPagedRecipes(1);
             int pageCount = 1;
             if (res.IsSuccessful)
             {
                 pageCount = Convert.ToInt32(res.Headers.FirstOrDefault(x => x.Name == "X-WP-TotalPages").Value);
                 for (int i = 1; i <= pageCount; i++)
                 {
-                    var response = GetProtoRecipes(i);
+                    var response = GetPagedRecipes(i);
                     if (response.IsSuccessful)
                     {
-                        foreach (ProtoRecipe protoRecipe in response.Data)
+                        foreach (PagedRecipe pagedRecipe in response.Data)
                         {
-                            protoRecipes.Add(protoRecipe);
+                            pagedRecipes.Add(pagedRecipe);
                         }
                     }
                 }
             }
 
             List<Recipe> recipes = Recipe.GetRecipesFromDatabase();
-            List<ProtoRecipe> missingRecipes = new List<ProtoRecipe>();
-            foreach (ProtoRecipe protoRecipe in protoRecipes)
+            List<PagedRecipe> missingRecipes = new List<PagedRecipe>();
+            foreach (PagedRecipe pagedRecipe in pagedRecipes)
             {
-                if (!recipes.Any(x => x.id == protoRecipe.id))
+                if (!recipes.Any(x => x.id == pagedRecipe.id))
                 {
-                    missingRecipes.Add(protoRecipe);
+                    missingRecipes.Add(pagedRecipe);
                 }
             }
 
             Console.WriteLine("================================================ missing recipes ================================================ ");
             int recipesMissing = 0;
-            foreach (ProtoRecipe recipe in missingRecipes)
+            foreach (PagedRecipe recipe in missingRecipes)
             {
                 var response = GetSpecificRecipe(recipe.id);
                 if (response.Data.ping_status == "open")
@@ -164,12 +164,12 @@ namespace Scraper
             }
         }
 
-        public static IRestResponse<List<ProtoRecipe>> GetProtoRecipes(int page)
+        public static IRestResponse<List<PagedRecipe>> GetPagedRecipes(int page)
         {
             string url = string.Format("{0}?page={1}", ConfigurationManager.AppSettings["APIURL2"], page);
             var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
-            return client.Execute<List<ProtoRecipe>>(request);
+            return client.Execute<List<PagedRecipe>>(request);
         }
 
         public static IRestResponse<SpecificRecipe> GetSpecificRecipe(int recipeID)
