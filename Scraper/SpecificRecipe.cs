@@ -1,5 +1,7 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +10,14 @@ namespace Scraper
 {
     public class SpecificRecipe
     {
+        public static IRestResponse<SpecificRecipe> GetSpecificRecipe(int recipeID)
+        {
+            string url = string.Format("{0}/{1}", ConfigurationManager.AppSettings["APIURL2"], recipeID);
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.GET);
+            return client.Execute<SpecificRecipe>(request);
+        }
+
         public SpecificRecipe()
         {
 
