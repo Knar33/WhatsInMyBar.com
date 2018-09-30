@@ -28,14 +28,14 @@ namespace Scraper
         public static void ScrapeRecipes()
         {
             List<PagedRecipe> pagedRecipes = new List<PagedRecipe>();
-            var res = GetPagedRecipes(1);
+            var res = PagedRecipe.GetPagedRecipes(1);
             int pageCount = 1;
             if (res.IsSuccessful)
             {
                 pageCount = Convert.ToInt32(res.Headers.FirstOrDefault(x => x.Name == "X-WP-TotalPages").Value);
                 for (int i = 1; i <= pageCount; i++)
                 {
-                    var response = GetPagedRecipes(i);
+                    var response = PagedRecipe.GetPagedRecipes(i);
                     if (response.IsSuccessful)
                     {
                         foreach (PagedRecipe pagedRecipe in response.Data)
@@ -60,7 +60,7 @@ namespace Scraper
             int recipesMissing = 0;
             foreach (PagedRecipe recipe in missingRecipes)
             {
-                var response = GetSpecificRecipe(recipe.id);
+                var response = SpecificRecipe.GetSpecificRecipe(recipe.id);
                 if (response.Data.ping_status == "open")
                 {
                     recipesMissing++;
@@ -162,22 +162,6 @@ namespace Scraper
             {
                 Console.WriteLine("{0},{1}", category.Key, category.Value);
             }
-        }
-
-        public static IRestResponse<List<PagedRecipe>> GetPagedRecipes(int page)
-        {
-            string url = string.Format("{0}?page={1}", ConfigurationManager.AppSettings["APIURL2"], page);
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.GET);
-            return client.Execute<List<PagedRecipe>>(request);
-        }
-
-        public static IRestResponse<SpecificRecipe> GetSpecificRecipe(int recipeID)
-        {
-            string url = string.Format("{0}/{1}", ConfigurationManager.AppSettings["APIURL2"], recipeID);
-            var client = new RestClient(url);
-            var request = new RestRequest(Method.GET);
-            return client.Execute<SpecificRecipe>(request);
         }
     }
 }

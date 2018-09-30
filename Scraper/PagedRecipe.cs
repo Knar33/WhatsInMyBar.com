@@ -1,5 +1,7 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +10,14 @@ namespace Scraper
 {
     public class PagedRecipe
     {
+        public static IRestResponse<List<PagedRecipe>> GetPagedRecipes(int page)
+        {
+            string url = string.Format("{0}?page={1}", ConfigurationManager.AppSettings["APIURL2"], page);
+            var client = new RestClient(url);
+            var request = new RestRequest(Method.GET);
+            return client.Execute<List<PagedRecipe>>(request);
+        }
+
         public PagedRecipe()
         {
 
@@ -115,5 +125,4 @@ namespace Scraper
         public bool embeddable { get; set; }
         public string href { get; set; }
     }
-
 }
