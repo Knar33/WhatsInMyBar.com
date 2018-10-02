@@ -31,7 +31,7 @@ namespace Scraper
 
         public int count { get; set; }
         public bool success { get; set; }
-        public List<AdminRecipe> recipes { get; set; }
+        public List<Recipe> recipes { get; set; }
         public string Content { get; set; }
         public HttpStatusCode StatusCode { get; set; }
     }
