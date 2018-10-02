@@ -46,7 +46,7 @@ namespace Scraper
                 }
             }
 
-            List<Recipe> recipes = Recipe.GetRecipesFromDatabase();
+            List<AdminRecipe> recipes = AdminRecipe.GetRecipesFromDatabase();
             List<PagedRecipe> missingRecipes = new List<PagedRecipe>();
             foreach (PagedRecipe pagedRecipe in pagedRecipes)
             {
@@ -71,36 +71,40 @@ namespace Scraper
 
             if (recipesMissing > 0)
             {
-                List<Ingredient> ingredients = Ingredient.GetIngredientsFromDatabase();
+                List<AdminRecipe.Ingredient> ingredients = AdminRecipe.Ingredient.GetIngredientsFromDatabase();
                 if (ingredients.Count() == 0)
                 {
-                    ingredients = Ingredient.GetHardCodedIngredients();
+                    ingredients = AdminRecipe.Ingredient.GetHardCodedIngredients();
                 }
 
                 bool ingredientsLeft = true;
                 
                 while (ingredientsLeft)
                 {
-                    List<Ingredient> newIngredients = new List<Ingredient>();
-                    foreach (Ingredient ingredient in ingredients.Where(x => !x.Scraped))
+                    List<AdminRecipe.Ingredient> newIngredients = new List<AdminRecipe.Ingredient>();
+                    foreach (AdminRecipe.Ingredient ingredient in ingredients.Where(x => !x.Scraped))
                     {
                         Console.WriteLine(ingredient.name);
-                        GetRecipesResponse response = (new GetRecipesRequest(ingredient.name, 1)).Send();
+                        var response = AdminRecipe.GetAdminRecipes(ingredient.name, 1);
 
-                        decimal pages = Math.Ceiling(response.count / 24m);
+                        decimal pages = 0;
+                        if (response.IsSuccessful)
+                        {
+                             pages = Math.Ceiling(response.Data.Count() / 24m);
+                        }
                         for (int i = 1; i <= pages; i++)
                         {
-                            GetRecipesResponse innerResponse = (new GetRecipesRequest(ingredient.name, i)).Send();
-                            if (innerResponse.recipes?.Count() > 0)
+                            var innerResponse = AdminRecipe.GetAdminRecipes(ingredient.name, i);
+                            if (innerResponse.IsSuccessful && innerResponse.Data?.Count() > 0)
                             {
-                                foreach (Recipe recipe in innerResponse.recipes)
+                                foreach (AdminRecipe recipe in innerResponse.Data)
                                 {
                                     if (!recipes.Any(x => x.id == recipe.id))
                                     {
                                         recipes.Add(recipe);
                                         recipe.Insert();
                                         recipe.DownloadThumbnail();
-                                        foreach (Ingredient newIngredient in recipe.ingredients)
+                                        foreach (AdminRecipe.Ingredient newIngredient in recipe.ingredients)
                                         {
                                             if (!ingredients.Any(x => x.ingredient_id == newIngredient.ingredient_id) && !newIngredients.Any(x => x.ingredient_id == newIngredient.ingredient_id))
                                             {
@@ -116,7 +120,7 @@ namespace Scraper
                         ingredient.Scraped = true;
                     }
 
-                    foreach (Ingredient newIngredient in newIngredients)
+                    foreach (AdminRecipe.Ingredient newIngredient in newIngredients)
                     {
                         ingredients.Add(newIngredient);
                     }
@@ -135,10 +139,10 @@ namespace Scraper
         public static void CategorizeIngredients()
         {
             Regex alphaNumeric = new Regex("[^a-zA-Z0-9]");
-            List<Ingredient> ingredients = Ingredient.GetIngredientsFromDatabase();
+            List<AdminRecipe.Ingredient> ingredients = AdminRecipe.Ingredient.GetIngredientsFromDatabase();
             Dictionary<string, int> categories = new Dictionary<string, int>();
 
-            foreach (Ingredient ingredient in ingredients)
+            foreach (AdminRecipe.Ingredient ingredient in ingredients)
             {
                 string[] words = ingredient.name.Replace('-', ' ').Split(' ').Where(x => x.Length > 2).Select(x => alphaNumeric.Replace(x, "").ToLower().StripDiacritics()).GroupBy(x => x).Select(x => x.First()).ToArray();
                 foreach (string word in words) 
