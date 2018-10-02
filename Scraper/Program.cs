@@ -21,54 +21,53 @@ namespace Scraper
     {
         static void Main(string[] args)
         {
-            ScrapeRecipes();
+            //ScrapeRecipes();
             CategorizeIngredients();
         }
 
         public static void ScrapeRecipes()
         {
-            int recipesMissing = 1;
-            //List<PagedRecipe> pagedRecipes = new List<PagedRecipe>();
-            //var res = PagedRecipe.GetPagedRecipes(1);
-            //int pageCount = 1;
-            //if (res.IsSuccessful)
-            //{
-            //    pageCount = Convert.ToInt32(res.Headers.FirstOrDefault(x => x.Name == "X-WP-TotalPages").Value);
-            //    for (int i = 1; i <= pageCount; i++)
-            //    {
-            //        var response = PagedRecipe.GetPagedRecipes(i);
-            //        if (response.IsSuccessful)
-            //        {
-            //            foreach (PagedRecipe pagedRecipe in response.Data)
-            //            {
-            //                pagedRecipes.Add(pagedRecipe);
-            //            }
-            //        }
-            //    }
-            //}
+            List<PagedRecipe> pagedRecipes = new List<PagedRecipe>();
+            var res = PagedRecipe.GetPagedRecipes(1);
+            int pageCount = 1;
+            if (res.IsSuccessful)
+            {
+                pageCount = Convert.ToInt32(res.Headers.FirstOrDefault(x => x.Name == "X-WP-TotalPages").Value);
+                for (int i = 1; i <= pageCount; i++)
+                {
+                    var response = PagedRecipe.GetPagedRecipes(i);
+                    if (response.IsSuccessful)
+                    {
+                        foreach (PagedRecipe pagedRecipe in response.Data)
+                        {
+                            pagedRecipes.Add(pagedRecipe);
+                        }
+                    }
+                }
+            }
 
-            List<AdminRecipe.Recipe> recipes = AdminRecipe.Recipe.GetRecipesFromDatabase();
-            //List<PagedRecipe> missingRecipes = new List<PagedRecipe>();
-            //foreach (PagedRecipe pagedRecipe in pagedRecipes)
-            //{
-            //    if (!recipes.Any(x => x.id == pagedRecipe.id))
-            //    {
-            //        missingRecipes.Add(pagedRecipe);
-            //    }
-            //}
+            List<AdminRecipe> recipes = AdminRecipe.GetRecipesFromDatabase();
+            List<PagedRecipe> missingRecipes = new List<PagedRecipe>();
+            foreach (PagedRecipe pagedRecipe in pagedRecipes)
+            {
+                if (!recipes.Any(x => x.id == pagedRecipe.id))
+                {
+                    missingRecipes.Add(pagedRecipe);
+                }
+            }
 
-            //Console.WriteLine("================================================ missing recipes ================================================ ");
-            //int recipesMissing = 0;
-            //foreach (PagedRecipe recipe in missingRecipes)
-            //{
-            //    var response = SpecificRecipe.GetSpecificRecipe(recipe.id);
-            //    if (response.Data.ping_status == "open")
-            //    {
-            //        recipesMissing++;
-            //        Console.WriteLine(string.Format("{0} - {1}", response.Data.title.rendered, response.Data.id));
-            //    }
-            //}
-            //Console.WriteLine("================================================ End of missing recipes ================================================ ");
+            Console.WriteLine("================================================ missing recipes ================================================ ");
+            int recipesMissing = 0;
+            foreach (PagedRecipe recipe in missingRecipes)
+            {
+                var response = SpecificRecipe.GetSpecificRecipe(recipe.id);
+                if (response.Data.ping_status == "open")
+                {
+                    recipesMissing++;
+                    Console.WriteLine(string.Format("{0} - {1}", response.Data.title.rendered, response.Data.id));
+                }
+            }
+            Console.WriteLine("================================================ End of missing recipes ================================================ ");
 
             if (recipesMissing > 0)
             {
@@ -91,14 +90,14 @@ namespace Scraper
                         decimal pages = 0;
                         if (response.IsSuccessful)
                         {
-                             pages = Math.Ceiling(response.Data.count / 24m);
+                             pages = Math.Ceiling(response.Data.Count() / 24m);
                         }
                         for (int i = 1; i <= pages; i++)
                         {
                             var innerResponse = AdminRecipe.GetAdminRecipes(ingredient.name, i);
-                            if (innerResponse.IsSuccessful && innerResponse.Data?.count > 0)
+                            if (innerResponse.IsSuccessful && innerResponse.Data?.Count() > 0)
                             {
-                                foreach (AdminRecipe.Recipe recipe in innerResponse.Data.recipes)
+                                foreach (AdminRecipe recipe in innerResponse.Data)
                                 {
                                     if (!recipes.Any(x => x.id == recipe.id))
                                     {
